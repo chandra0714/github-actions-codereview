@@ -22,7 +22,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pylint flake8 your-custom-linter
+              pip install pylint
+              pip install flake8==7.1.0
 
       - name: Run linters
         run: |
