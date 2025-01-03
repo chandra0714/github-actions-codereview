@@ -1,9 +1,8 @@
 # test_sample.py
 
 def test_sum():
-     """
-    Test case to validate the sum of a number and 5.
-    """
+     message = "This is a test string."
+    duplicate_message = "This is a test string.
     a = 5  # Unused variable
     b = 10
     result = b + 5
