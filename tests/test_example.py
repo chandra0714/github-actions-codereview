@@ -2,11 +2,11 @@
 
 def test_sum():
      message = "This is a test string."
-    duplicate_message = "This is a test string.
-    a = 5  # Unused variable
-    b = 10
-    result = b + 5
-    assert result == 15
+     duplicate_message = "This is a test string.
+     a = 5  # Unused variable
+     b = 10
+     result = b + 5
+     assert result == 15
 
 def test_product():
     """
