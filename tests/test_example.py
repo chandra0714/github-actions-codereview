@@ -6,6 +6,8 @@ def test_sum():
      a = 5  # Unused variable
      b = 10
      result = b + 5
+     print(message)
+     print(duplicate_message)
      assert result == 15
 
 def test_product():
