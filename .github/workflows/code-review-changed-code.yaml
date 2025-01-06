@@ -1,0 +1,47 @@
+name: Code Review
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '**.py' # Trigger on any Python file changes in the PR
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout PR
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+          python-version: '3.x'
+    - name: Install dependencies
+      run: |
+            pip install pylint
+    - name: Get list of changed files and lines
+      id: files
+      run: |
+        # Get the list of files changed in the last commit
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.py$' || true)
+        
+        # Get the list of changed lines for each file
+        for FILE in $CHANGED_FILES; do
+          echo "Checking changes in file: $FILE"
+          git diff HEAD~1 HEAD -- $FILE | grep -E '^\+|^-|^@' | sed 's/^\+//g' | sed 's/^-//g' > ${FILE}_changed_lines.py
+        done
+        echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
+
+    - name: Run Pylint on changed lines
+      run: |
+        for FILE in $CHANGED_FILES; do
+          if [ -f "${FILE}_changed_lines.py" ]; then
+            pylint ${FILE}_changed_lines.py
+            rm ${FILE}_changed_lines.py  # Clean up the temporary file
+          fi
+        done
